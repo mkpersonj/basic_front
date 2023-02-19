@@ -1,32 +1,35 @@
-import testSlice from "@/store/reducers/test";
-import { useRef } from "react";
-import { Button, Form } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import Layout from "@/components/layout/Layout";
+import useModal from "@/hooks/useModal";
+import { Button } from "react-bootstrap";
 
 export default function Home() {
-  const dispatch = useDispatch();
-  const { results } = useSelector((state) => state.test);
-  const textRef = useRef();
+  const { _alert, _confirm } = useModal();
 
-  const onClickAddSentence = () => {
-    dispatch(testSlice.actions.addSentence(textRef.current.value));
-    textRef.current.value = "";
+  const onClickAlert = () => {
+    _alert("alert창 테스트입니다.");
   };
-  const onClickInit = () => {
-    dispatch(testSlice.actions.setState({ state: "results", value: [] }));
+
+  const onClickConfirm = () => {
+    _confirm(
+      "confirm창 테스트입니다.",
+      () => {
+        alert("true callbak");
+      },
+      () => {
+        alert("false callbak");
+      }
+    );
   };
 
   return (
-    <div className="m-5">
-      <p>redux-toolkit 테스트</p>
-      {results.map((v, i) => {
-        return <p key={i}>{v}</p>;
-      })}
-      <Form.Control type="text" className="mb-3" ref={textRef} />
-      <Button onClick={onClickAddSentence}>Add Sentence</Button>
-      <Button onClick={onClickInit} className="ms-3">
-        Init
-      </Button>
-    </div>
+    <Layout navbar={true}>
+      <div className="p-3">
+        <p className="mt-3">홈화면</p>
+        <Button onClick={onClickAlert}>alert창 테스트</Button>
+        <Button className="ms-3" onClick={onClickConfirm}>
+          confirm창 테스트
+        </Button>
+      </div>
+    </Layout>
   );
 }
