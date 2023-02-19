@@ -9,7 +9,6 @@ const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    // state 변경할 때 사용
     setState(state, action) {
       state[action.payload.state] = action.payload.value;
     },
